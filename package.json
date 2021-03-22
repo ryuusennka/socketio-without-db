@@ -1,0 +1,28 @@
+{
+  "name": "socketio-without-db",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./buildServer/app.js",
+    "prestart": "yarn run build",
+    "dev": "nodemon --exec babel-node -- server/app.js",
+    "build": "rm -rf ./buildServer && babel -d ./buildServer ./server -s --copy-files"
+  },
+  "dependencies": {
+    "cookie": "^0.4.1",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "socket.io": "^4.0.0",
+    "url-parse": "^1.5.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.0",
+    "@babel/core": "^7.13.8",
+    "@babel/node": "^7.13.0",
+    "@babel/preset-env": "^7.13.8",
+    "nodemon": "^2.0.7"
+  }
+}

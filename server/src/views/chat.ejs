@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+      integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>ChatCord App</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="chat-container">
+        <header class="chat-header">
+          <h1><i class="fas fa-smile"></i> ChatCord</h1>
+          <a href="/" class="btn">Leave Room</a>
+        </header>
+        <main class="chat-main">
+          <div class="chat-sidebar">
+            <h3><i class="fas fa-comments"></i> Room Name:</h3>
+            <h2 id="room-name">{{ chatroom }}</h2>
+            <h3><i class="fas fa-users"></i> Users</h3>
+            <ul id="users" v-for="(item,index) in users" :key="index">
+              <li>{{ item.username }}</li>
+            </ul>
+          </div>
+          <div class="chat-messages">
+            <div class="message" v-for="(item, index) in messages" :key="index">
+              <p class="meta">
+                {{ item.username }} <span>{{ item.date }}</span>
+              </p>
+              <p class="text">{{ item.message }}</p>
+            </div>
+          </div>
+        </main>
+        <div class="chat-form-container">
+          <form id="chat-form" @submit="handleSubmit">
+            <input
+              id="msg"
+              type="text"
+              placeholder="Enter Message"
+              required
+              autocomplete="off"
+              v-model="msg"
+            />
+            <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+      const socket = io();
+      // const { username, chatroom } = Qs.parse(location.search, {
+      //   ignoreQueryPrefix: true,
+      // });
+      // console.log(username, chatroom);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: toast => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        },
+      });
+      var app = new Vue({
+        el: '#app',
+        data: {
+          messages: [],
+          msg: '',
+          users: [],
+          chatroom: '',
+        },
+        created() {
+          // socket.emit('joinRoom', { username, chatroom });
+          socket.on('welcome', ({ message, chatroom, users }) => {
+            this.chatroom = chatroom;
+            this.users = users;
+            Toast.fire({
+              icon: 'success',
+              title: message,
+            });
+          });
+          socket.on('userLogin', ({ message, users }) => {
+            this.users = users;
+            Toast.fire({
+              icon: 'info',
+              title: message,
+            });
+          });
+          socket.on('userLeave', ({ message, users }) => {
+            this.users = users;
+            Toast.fire({
+              icon: 'warning',
+              title: message,
+            });
+          });
+        },
+        mounted() {
+          const chatMessageBox = document.querySelector('.chat-messages');
+          socket.on('chatMessage', ({ message, date, username }) => {
+            new Promise(r => {
+              this.messages.push({ message, date, username });
+              r(null);
+            }).then(() => {
+              chatMessageBox.scrollTop = chatMessageBox.scrollHeight;
+            });
+          });
+        },
+        methods: {
+          handleSubmit(e) {
+            e.preventDefault();
+            socket.emit('chatMessage', {
+              message: this.msg,
+            });
+            this.msg = '';
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
