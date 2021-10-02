@@ -7,6 +7,7 @@
  * @Description:
  */
 const socketIo = require('socket.io');
+const moment = require('moment');
 const parse = require('url-parse');
 const users = [];
 
@@ -35,7 +36,7 @@ module.exports = function (server) {
       io.in(chatroom).emit('chatMessage', {
         username,
         message,
-        date: new Date().toString(),
+        date: moment().format('YYYY-MM-DD HH:mm:ss'),
       });
     });
 
