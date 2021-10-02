@@ -2,8 +2,8 @@
  * @Author: ryuusennka
  * @Date: 2021-03-19 14:24:59
  * @LastEditors: ryuusennka
- * @LastEditTime: 2021-03-23 03:49:41
- * @FilePath: /quick-test/server/socket.js
+ * @LastEditTime: 2021-10-02 20:11:30
+ * @FilePath: /socketio-without-db/server/socket.js
  * @Description:
  */
 const socketIo = require('socket.io');
@@ -36,7 +36,7 @@ module.exports = function (server) {
       io.in(chatroom).emit('chatMessage', {
         username,
         message,
-        date: moment().format('YYYY-MM-DD HH:mm:ss'),
+        date: moment().utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss'),
       });
     });
 
