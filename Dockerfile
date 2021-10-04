@@ -1,10 +1,10 @@
 FROM node:14-alpine
-#ENV NODE_ENV=production
+ENV PORT=10404
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json*", "yarn.lock", "npm-shrinkwrap.json*", "./"]
-RUN yarn install --silent && mv node_modules ../
+RUN yarn install
 COPY . .
 EXPOSE 10404
-RUN chown -R node /usr/src/app
-USER node
+# RUN chown -R node /usr/src/app
+# USER node
 CMD ["yarn", "start"]
