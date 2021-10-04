@@ -1,5 +1,5 @@
 FROM node:14-alpine
-ENV NODE_ENV=production
+#ENV NODE_ENV=production
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json*", "yarn.lock", "npm-shrinkwrap.json*", "./"]
 RUN yarn install --silent && mv node_modules ../
