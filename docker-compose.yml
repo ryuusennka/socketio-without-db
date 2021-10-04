@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   socketio-without-db:
-    image: socket-io-without-db
+    image: socket-io-without-db:v1
     container_name: socketio-without-db
     build:
       context: .
