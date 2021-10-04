@@ -1,13 +1,12 @@
 version: '3.4'
 
 services:
-  socketio-without-db:
-    image: socket-io-without-db:v1
-    container_name: socketio-without-db
+  socketiowithoutdb:
+    image: socketiowithoutdb:v1
     build:
       context: .
       dockerfile: ./Dockerfile
     environment:
-      PORT: 10404
+      NODE_ENV: production
     ports:
       - 10404:10404
