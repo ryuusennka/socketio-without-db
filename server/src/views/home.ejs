@@ -1,9 +1,9 @@
 <!--
  * @Author: ryuusennka
  * @Date: 2021-03-22 16:10:30
- * @LastEditors: ryuusennka
- * @LastEditTime: 2021-10-01 18:38:22
- * @FilePath: /socketio-without-db/server/src/views/home.ejs
+ * @LastEditors   : ryuusennka
+ * @LastEditTime  : 2021-11-01 03:18:34
+ * @FilePath      : /socketio-without-db/server/src/views/home.ejs
  * @Description:
 -->
 <!DOCTYPE html>
@@ -19,28 +19,28 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
-    <title>ChatCord App</title>
+    <title>聊天室 App</title>
   </head>
   <body>
     <div id="app">
       <div class="join-container">
         <header class="join-header">
-          <h1><i class="fas fa-smile"></i> ChatCord</h1>
+          <h1><i class="fas fa-smile"></i> 聊天室</h1>
         </header>
         <main class="join-main">
           <form action="/chat">
             <div class="form-control">
-              <label for="username">Username</label>
+              <label for="username">昵称</label>
               <input
                 type="text"
                 name="username"
                 id="username"
-                placeholder="Enter username..."
+                placeholder="输入昵称..."
                 required
               />
             </div>
             <div class="form-control">
-              <label for="chatroom">Room</label>
+              <label for="chatroom">选择房间</label>
               <select name="chatroom" id="chatroom">
                 <option value="JavaScript">JavaScript</option>
                 <option value="Python">Python</option>
@@ -50,7 +50,7 @@
                 <option value="Java">Java</option>
               </select>
             </div>
-            <button type="submit" class="btn">Join Chat</button>
+            <button type="submit" class="btn">加入聊天</button>
           </form>
         </main>
       </div>

@@ -10,30 +10,38 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
-    <title>ChatCord App</title>
+    <title>聊天室 App</title>
+    <style>
+      [v-cloak] > * {
+        display: none;
+      }
+      [v-cloak]::before {
+        content: 'loading…';
+      }
+    </style>
   </head>
   <body>
     <div id="app">
       <div class="chat-container">
         <header class="chat-header">
-          <h1><i class="fas fa-smile"></i> ChatCord</h1>
-          <a href="/" class="btn">Leave Room</a>
+          <h1><i class="fas fa-smile"></i> 聊天室</h1>
+          <a href="/" class="btn">离开房间</a>
         </header>
         <main class="chat-main">
           <div class="chat-sidebar">
-            <h3><i class="fas fa-comments"></i> Room Name:</h3>
-            <h2 id="room-name">{{ chatroom }}</h2>
-            <h3><i class="fas fa-users"></i> Users</h3>
+            <h3><i class="fas fa-comments"></i> 聊天室名称:</h3>
+            <h2 id="room-name" v-cloak>{{ chatroom }}</h2>
+            <h3><i class="fas fa-users"></i> 在线用户</h3>
             <ul id="users" v-for="(item,index) in users" :key="index">
-              <li>{{ item.username }}</li>
+              <li v-cloak>{{ item.username }}</li>
             </ul>
           </div>
           <div class="chat-messages">
             <div class="message" v-for="(item, index) in messages" :key="index">
-              <p class="meta">
-                {{ item.username }} <span>{{ item.date }}</span>
+              <p class="meta" v-cloak>
+                {{ item.username }} <span v-cloak>{{ item.date }}</span>
               </p>
-              <p class="text">{{ item.message }}</p>
+              <p class="text" v-cloak>{{ item.message }}</p>
             </div>
           </div>
         </main>
@@ -42,12 +50,12 @@
             <input
               id="msg"
               type="text"
-              placeholder="Enter Message"
+              placeholder="输入聊天内容"
               required
               autocomplete="off"
               v-model="msg"
             />
-            <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+            <button class="btn"><i class="fas fa-paper-plane"></i> 发送</button>
           </form>
         </div>
       </div>
