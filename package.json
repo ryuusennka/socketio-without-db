@@ -4,10 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node ./buildServer/app.js",
-    "prestart": "yarn run build",
-    "dev": "nodemon --exec babel-node -- server/app.js",
-    "build": "rm -rf ./buildServer && babel -d ./buildServer ./server -s --copy-files"
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js"
   },
   "dependencies": {
     "cookie": "^0.4.1",
