@@ -3,6 +3,7 @@ version: '3'
 services:
   socketiowithoutdb:
     image: socketiowithoutdb:v5
+    container_name: chatroom
     build:
       context: .
       dockerfile: ./Dockerfile
