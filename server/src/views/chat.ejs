@@ -41,7 +41,8 @@
               <p class="meta" v-cloak>
                 {{ item.username }} <span v-cloak>{{ item.date }}</span>
               </p>
-              <p class="text" v-cloak>{{ item.message }}</p>
+              <!-- <p class="text" v-cloak>{{ item.message }}</p> -->
+              <p class="text" v-cloak v-html="item.message"></p>
             </div>
           </div>
         </main>
@@ -125,6 +126,7 @@
               chatMessageBox.scrollTop = chatMessageBox.scrollHeight;
             });
           });
+          this.togglePasteImageToData64()();
         },
         methods: {
           handleSubmit(e) {
@@ -133,6 +135,44 @@
               message: this.msg,
             });
             this.msg = '';
+          },
+          togglePasteImageToData64() {
+            let flag = false;
+            const fn = e => {
+              /**
+               * event.clipboardData 是一个 DataTransfer
+               */
+              const clipboardData = e.clipboardData;
+              if (!(clipboardData && clipboardData.items)) {
+                //是否有粘贴内容
+                return;
+              }
+
+              for (let i = 0; i < clipboardData.items.length; i++) {
+                const item = clipboardData.items[i];
+                if (item.type.indexOf('image') === -1) return; // 判断是否是图片
+                // 得到图片的base64
+                const file = item.getAsFile();
+                const fr = new FileReader();
+                fr.onloadend = () => {
+                  const result = fr.result;
+                  console.log(result);
+                  socket.emit('chatMessage', {
+                    message: `<img src="${result}" style="display:block;max-width:100%;" />`,
+                  });
+                };
+                fr.readAsDataURL(file);
+              }
+            };
+            return function () {
+              flag = !flag;
+              console.log(flag);
+              if (flag) {
+                window.addEventListener('paste', fn);
+              } else {
+                window.removeEventListener('paste', fn);
+              }
+            };
           },
         },
       });
